@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joanna's Egyptian Arabic Homework - Rooms of the House</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#4A90E2',
+                            purple: '#7E57C2',
+                            pink: '#EC407A',
+                            yellow: '#FFCA28',
+                            green: '#66BB6A',
+                            bg: '#F4F7FE'
+                        }
+                    },
+                    boxShadow: {
+                        '3d': '0 8px 0 0 rgba(0,0,0,0.12)',
+                        '3d-btn': '0 6px 0 0 #3b82f6',
+                        '3d-success': '0 6px 0 0 #16a34a',
+                        '3d-purple': '0 6px 0 0 #6b21a8'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 50%, #fce7f3 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+        }
+        .btn-3d {
+            transition: all 0.15s ease;
+            position: relative;
+            top: 0;
+        }
+        .btn-3d:active {
+            top: 4px;
+            box-shadow: 0 2px 0 0 rgba(0,0,0,0.15) !important;
+        }
+        .draggable-item {
+            touch-action: none;
+            cursor: grab;
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+        }
+        .drop-zone.drag-over {
+            border-color: #3b82f6 !important;
+            background-color: #eff6ff !important;
+            transform: scale(1.02);
+        }
+        .pulse-subtle {
+            animation: pulseSubtle 2s infinite;
+        }
+        @keyframes pulseSubtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+    </style>
+</head>
+<body class="p-3 md:p-6 flex flex-col justify-between min-h-screen text-slate-800">
+
+    <header class="max-w-4xl mx-auto w-full mb-4">
+        <div class="glass-card rounded-3xl p-4 md:p-6 shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-tr from-yellow-400 to-pink-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-md font-display font-bold">
+                    🏠
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-display font-bold text-slate-800">Egyptian Arabic Activity</h1>
+                    <p class="text-xs md:text-sm text-slate-500 font-semibold">Student: <span class="text-indigo-600 font-bold">Joanna</span> • Topic: Rooms of the House</p>
+                </div>
+            </div>
+            <div id="progress-container" class="w-full md:w-auto flex flex-col items-end gap-1">
+                <span id="progress-text" class="text-xs font-bold text-slate-600 uppercase tracking-wider">Activity 1 of 6</span>
+                <div class="w-full md:w-48 bg-slate-200 h-3 rounded-full overflow-hidden p-0.5">
+                    <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500" style="width: 16%;"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto w-full flex-grow flex flex-col justify-center my-2">
+        
+        <!-- Welcome Screen -->
+        <div id="screen-welcome" class="glass-card rounded-3xl p-6 md:p-10 shadow-2xl text-center space-y-6">
+            <div class="inline-block p-4 bg-indigo-50 rounded-3xl mb-2">
+                <div class="text-6xl animate-bounce">🏡</div>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-display font-bold text-indigo-900">Welcome, Joanna!</h2>
+            <p class="text-lg text-slate-600 max-w-lg mx-auto">
+                Let's practice the 5 rooms of the house in Egyptian Arabic Franco!
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 max-w-2xl mx-auto my-6 text-center">
+                <div class="bg-white/80 p-3 rounded-2xl border border-indigo-100 shadow-sm">
+                    <div class="text-2xl">🛏️</div>
+                    <div class="text-xs font-bold text-slate-400">Bedroom</div>
+                    <div class="font-display font-bold text-indigo-600 text-sm">oda el nom</div>
+                </div>
+                <div class="bg-white/80 p-3 rounded-2xl border border-indigo-100 shadow-sm">
+                    <div class="text-2xl">🛁</div>
+                    <div class="text-xs font-bold text-slate-400">Bathroom</div>
+                    <div class="font-display font-bold text-indigo-600 text-sm">7ammam</div>
+                </div>
+                <div class="bg-white/80 p-3 rounded-2xl border border-indigo-100 shadow-sm">
+                    <div class="text-2xl">🍳</div>
+                    <div class="text-xs font-bold text-slate-400">Kitchen</div>
+                    <div class="font-display font-bold text-indigo-600 text-sm">matb5</div>
+                </div>
+                <div class="bg-white/80 p-3 rounded-2xl border border-indigo-100 shadow-sm">
+                    <div class="text-2xl">🛋️</div>
+                    <div class="text-xs font-bold text-slate-400">Living Room</div>
+                    <div class="font-display font-bold text-indigo-600 text-sm">salon</div>
+                </div>
+                <div class="bg-white/80 p-3 rounded-2xl border border-indigo-100 shadow-sm col-span-2 sm:col-span-1">
+                    <div class="text-2xl">🍽️</div>
+                    <div class="text-xs font-bold text-slate-400">Dining Room</div>
+                    <div class="font-display font-bold text-indigo-600 text-sm">sofra</div>
+                </div>
+            </div>
+
+            <button onclick="startHomework()" class="btn-3d bg-indigo-600 hover:bg-indigo-700 text-white font-display text-xl px-10 py-4 rounded-2xl shadow-3d-purple transition">
+                Start Homework 🎉
+            </button>
+        </div>
+
+        <!-- Dynamic Activity Container -->
+        <div id="activity-container" class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl hidden">
+            <!-- Content injected dynamically via JS -->
+        </div>
+
+        <!-- Feedback Modal / Banner -->
+        <div id="feedback-banner" class="hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 max-w-md w-11/12 glass-card border-2 p-4 rounded-2xl shadow-2xl z-50 text-center animate-bounce">
+            <span id="feedback-text" class="font-display text-lg font-bold"></span>
+        </div>
+
+    </main>
+
+    <footer class="max-w-4xl mx-auto w-full text-center text-xs text-slate-500 py-3">
+        Egyptian Arabic Interactive Homework • Joanna's Online Activity
+    </footer>
+
+    <script>
+        // Custom 3D Cartoon SVG Assets for rooms
+        const ROOM_SVGS = {
+            bedroom: `
+            <svg viewBox="0 0 400 300" class="w-full h-full rounded-2xl shadow-inner bg-sky-100">
+                <!-- Background Wall & Floor -->
+                <rect x="0" y="0" width="400" height="220" fill="#E0F2FE"/>
+                <rect x="0" y="220" width="400" height="80" fill="#D1D5DB"/>
+                <!-- Baseboard -->
+                <rect x="0" y="215" width="400" height="10" fill="#9CA3AF"/>
+                <!-- Window -->
+                <rect x="270" y="40" width="80" height="90" rx="8" fill="#BAE6FD" stroke="#38BDF8" stroke-width="4"/>
+                <line x1="310" y1="40" x2="310" y2="130" stroke="#38BDF8" stroke-width="3"/>
+                <line x1="270" y1="85" x2="350" y2="85" stroke="#38BDF8" stroke-width="3"/>
+                <circle x="330" y="60" r="10" fill="#FDE047"/>
+                <!-- Rug -->
+                <ellipse cx="200" cy="250" rx="140" ry="30" fill="#F472B6"/>
+                <!-- Bed Frame -->
+                <rect x="70" y="150" width="220" height="80" rx="12" fill="#818CF8"/>
+                <!-- Headboard -->
+                <rect x="60" y="110" width="20" height="120" rx="6" fill="#4F46E5"/>
+                <!-- Mattress/Sheets -->
+                <rect x="80" y="160" width="200" height="60" rx="8" fill="#F8FAFC"/>
+                <!-- Blanket -->
+                <path d="M 130,160 L 280,160 Q 280,220 280,220 L 130,220 Z" fill="#38BDF8" rx="6"/>
+                <!-- Pillows -->
+                <rect x="90" y="135" width="55" height="30" rx="8" fill="#DDD6FE"/>
+                <rect x="150" y="135" width="55" height="30" rx="8" fill="#DDD6FE"/>
+                <!-- Nightstand -->
+                <rect x="300" y="165" width="50" height="65" rx="6" fill="#A78BFA"/>
+                <circle cx="325" cy="185" r="4" fill="#4C1D95"/>
+                <!-- Lamp -->
+                <path d="M 315,165 L 335,165 L 330,140 L 320,140 Z" fill="#FBBF24"/>
+                <path d="M 310,140 L 340,140 L 330,120 L 320,120 Z" fill="#F43F5E"/>
+            </svg>`,
+
+            bathroom: `
+            <svg viewBox="0 0 400 300" class="w-full h-full rounded-2xl shadow-inner bg-emerald-50">
+                <!-- Background Wall & Tiled Floor -->
+                <rect x="0" y="0" width="400" height="210" fill="#A7F3D0"/>
+                <rect x="0" y="210" width="400" height="90" fill="#6EE7B7"/>
+                <line x1="0" y1="240" x2="400" y2="240" stroke="#047857" stroke-width="1" opacity="0.3"/>
+                <line x1="0" y1="270" x2="400" y2="270" stroke="#047857" stroke-width="1" opacity="0.3"/>
+                <!-- Bathtub -->
+                <rect x="30" y="140" width="180" height="90" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="4"/>
+                <rect x="40" y="150" width="160" height="60" rx="15" fill="#38BDF8" opacity="0.6"/>
+                <!-- Bubbles -->
+                <circle cx="70" cy="170" r="10" fill="#FFF" opacity="0.8"/>
+                <circle cx="90" cy="160" r="14" fill="#FFF" opacity="0.8"/>
+                <circle cx="115" cy="175" r="8" fill="#FFF" opacity="0.8"/>
+                <!-- Shower Head -->
+                <path d="M 50,70 L 50,110 L 70,110" fill="none" stroke="#94A3B8" stroke-width="6"/>
+                <path d="M 65,110 L 80,120 L 65,125 Z" fill="#64748B"/>
+                <!-- Toilet -->
+                <rect x="290" y="110" width="60" height="70" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+                <ellipse cx="320" cy="180" rx="35" ry="25" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+                <ellipse cx="320" cy="180" rx="25" ry="15" fill="#E2E8F0"/>
+                <!-- Sink & Mirror -->
+                <rect x="225" y="50" width="45" height="60" rx="20" fill="#BAE6FD" stroke="#38BDF8" stroke-width="3"/>
+                <rect x="220" y="130" width="55" height="15" rx="6" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3"/>
+                <rect x="235" y="145" width="25" height="50" fill="#94A3B8"/>
+            </svg>`,
+
+            kitchen: `
+            <svg viewBox="0 0 400 300" class="w-full h-full rounded-2xl shadow-inner bg-amber-50">
+                <!-- Wall & Floor -->
+                <rect x="0" y="0" width="400" height="210" fill="#FEF3C7"/>
+                <rect x="0" y="210" width="400" height="90" fill="#FDE68A"/>
+                <!-- Cabinets Back -->
+                <rect x="20" y="120" width="230" height="90" fill="#F97316" rx="6"/>
+                <rect x="25" y="125" width="70" height="80" fill="#FB923C" rx="4"/>
+                <rect x="100" y="125" width="70" height="80" fill="#FB923C" rx="4"/>
+                <rect x="175" y="125" width="70" height="80" fill="#FB923C" rx="4"/>
+                <!-- Countertop -->
+                <rect x="15" y="110" width="240" height="15" fill="#475569" rx="3"/>
+                <!-- Stove / Oven -->
+                <rect x="30" y="130" width="60" height="70" fill="#334155" rx="4"/>
+                <circle cx="45" cy="120" r="6" fill="#000"/>
+                <circle cx="75" cy="120" r="6" fill="#000"/>
+                <rect x="38" y="150" width="44" height="40" fill="#94A3B8" rx="3"/>
+                <!-- Fridge -->
+                <rect x="270" y="60" width="100" height="160" rx="12" fill="#E2E8F0" stroke="#94A3B8" stroke-width="3"/>
+                <line x1="270" y1="120" x2="370" y2="120" stroke="#94A3B8" stroke-width="3"/>
+                <rect x="280" y="80" width="8" height="25" rx="4" fill="#64748B"/>
+                <rect x="280" y="140" width="8" height="35" rx="4" fill="#64748B"/>
+                <!-- Hanging Cabinets -->
+                <rect x="20" y="30" width="180" height="55" fill="#F97316" rx="6"/>
+                <rect x="25" y="35" width="82" height="45" fill="#FB923C" rx="4"/>
+                <rect x="113" y="35" width="82" height="45" fill="#FB923C" rx="4"/>
+            </svg>`,
+
+            salon: `
+            <svg viewBox="0 0 400 300" class="w-full h-full rounded-2xl shadow-inner bg-purple-50">
+                <!-- Wall & Carpeted Floor -->
+                <rect x="0" y="0" width="400" height="210" fill="#F3E8FF"/>
+                <rect x="0" y="210" width="400" height="90" fill="#DDD6FE"/>
+                <!-- Picture Frame on Wall -->
+                <rect x="150" y="30" width="100" height="60" fill="#Fef08a" stroke="#CA8A04" stroke-width="4" rx="4"/>
+                <circle cx="200" cy="55" r="12" fill="#F97316"/>
+                <!-- Big Cozy Sofa -->
+                <rect x="80" y="120" width="240" height="90" rx="18" fill="#8B5CF6"/>
+                <rect x="65" y="130" width="30" height="70" rx="10" fill="#7C3AED"/>
+                <rect x="305" y="130" width="30" height="70" rx="10" fill="#7C3AED"/>
+                <!-- Cushions -->
+                <rect x="100" y="135" width="95" height="50" rx="8" fill="#A78BFA"/>
+                <rect x="205" y="135" width="95" height="50" rx="8" fill="#A78BFA"/>
+                <!-- Coffee Table -->
+                <ellipse cx="200" cy="245" rx="80" ry="22" fill="#B45309"/>
+                <ellipse cx="200" cy="242" rx="76" ry="18" fill="#D97706"/>
+                <!-- Plant -->
+                <path d="M 40,180 L 55,180 L 50,220 L 45,220 Z" fill="#92400E"/>
+                <circle cx="35" cy="165" r="14" fill="#22C55E"/>
+                <circle cx="58" cy="160" r="16" fill="#16A34A"/>
+                <circle cx="48" cy="145" r="15" fill="#15803D"/>
+            </svg>`,
+
+            sofra: `
+            <svg viewBox="0 0 400 300" class="w-full h-full rounded-2xl shadow-inner bg-rose-50">
+                <!-- Wall & Floor -->
+                <rect x="0" y="0" width="400" height="210" fill="#FFE4E6"/>
+                <rect x="0" y="210" width="400" height="90" fill="#FECDD3"/>
+                <!-- Pendant Light -->
+                <line x1="200" y1="0" x2="200" y2="60" stroke="#475569" stroke-width="3"/>
+                <path d="M 170,80 L 230,80 L 215,60 L 185,60 Z" fill="#F59E0B"/>
+                <circle cx="200" cy="85" r="8" fill="#FEF08A"/>
+                <!-- Chairs Backs -->
+                <rect x="100" y="110" width="35" height="70" rx="6" fill="#9A3412"/>
+                <rect x="265" y="110" width="35" height="70" rx="6" fill="#9A3412"/>
+                <!-- Dining Table -->
+                <rect x="80" y="165" width="240" height="20" rx="4" fill="#B45309"/>
+                <rect x="100" y="185" width="15" height="65" fill="#78350F"/>
+                <rect x="285" y="185" width="15" height="65" fill="#78350F"/>
+                <!-- Table Cloth / Runner -->
+                <rect x="140" y="165" width="120" height="20" fill="#F43F5E"/>
+                <!-- Fruit Bowl on Table -->
+                <path d="M 180,165 Q 200,180 220,165 Z" fill="#E2E8F0"/>
+                <circle cx="192" cy="158" r="7" fill="#EF4444"/>
+                <circle cx="205" cy="156" r="8" fill="#EAB308"/>
+                <circle cx="212" cy="160" r="6" fill="#22C55E"/>
+            </svg>`
+        };
+
+        const DATA = {
+            vocab: [
+                { id: 'bedroom', franco: 'oda el nom', english: 'Bedroom' },
+                { id: 'bathroom', franco: '7ammam', english: 'Bathroom' },
+                { id: 'kitchen', franco: 'matb5', english: 'Kitchen' },
+                { id: 'salon', franco: 'salon', english: 'Living Room' },
+                { id: 'sofra', franco: 'sofra', english: 'Dining Room' }
+            ]
+        };
+    </script>
+
+    <script>
+        let currentActivity = 0;
+        let quizAnswers = [];
+        let totalScore = 0;
+        let totalQuestionsPossible = 0;
+
+        // Web Audio API for gentle sound effects
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.15); // E5
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'wrong') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3
+                osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.25);
+            } else if (type === 'win') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.5);
+            }
+        }
+
+        function showFeedback(text, isSuccess) {
+            const banner = document.getElementById('feedback-banner');
+            const bannerText = document.getElementById('feedback-text');
+            bannerText.textContent = text;
+            banner.className = `fixed bottom-6 left-1/2 transform -translate-x-1/2 max-w-md w-11/12 glass-card border-2 p-4 rounded-2xl shadow-2xl z-50 text-center transition-all ${
+                isSuccess ? 'border-green-400 bg-green-50/90 text-green-800' : 'border-amber-400 bg-amber-50/90 text-amber-800'
+            }`;
+            banner.classList.remove('hidden');
+            setTimeout(() => {
+                banner.classList.add('hidden');
+            }, 2000);
+        }
+
+        function updateProgress(step, total = 6) {
+            document.getElementById('progress-text').textContent = `Activity ${step} of ${total}`;
+            document.getElementById('progress-bar').style.width = `${(step / total) * 100}%`;
+        }
+
+        function startHomework() {
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('activity-container').classList.remove('hidden');
+            currentActivity = 1;
+            renderActivity1();
+        }
+    </script>
+
+    <script>
+        // ========================================================
+        // ACTIVITY 1: LOOK & CHOOSE (5 Questions)
+        // ========================================================
+        const act1Questions = [
+            { room: 'bedroom', q: 'Where do you sleep?', correct: 'oda el nom', choices: ['oda el nom', '7ammam', 'matb5'] },
+            { room: 'bathroom', q: 'Where do you take a shower?', correct: '7ammam', choices: ['salon', '7ammam', 'sofra'] },
+            { room: 'kitchen', q: 'Where do you cook?', correct: 'matb5', choices: ['matb5', 'oda el nom', 'sofra'] },
+            { room: 'salon', q: 'Where do you relax and watch TV?', correct: 'salon', choices: ['7ammam', 'salon', 'matb5'] },
+            { room: 'sofra', q: 'Where do you eat with your family?', correct: 'sofra', choices: ['oda el nom', 'matb5', 'sofra'] }
+        ];
+        let act1Index = 0;
+
+        function renderActivity1() {
+            updateProgress(1);
+            if (act1Index >= act1Questions.length) {
+                act1Index = 0;
+                currentActivity = 2;
+                renderActivity2();
+                return;
+            }
+
+            const item = act1Questions[act1Index];
+            const container = document.getElementById('activity-container');
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider">Activity 1: Look & Choose</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">Question ${act1Index + 1} of 5</span>
+                    </div>
+
+                    <div class="text-center space-y-2">
+                        <h2 class="text-2xl md:text-3xl font-display font-bold text-slate-800">${item.q}</h2>
+                        <p class="text-sm text-slate-500">Look at the room picture and select the matching Egyptian Arabic word:</p>
+                    </div>
+
+                    <div class="max-w-md mx-auto h-56 md:h-64 p-2 bg-white rounded-3xl shadow-md border border-slate-100">
+                        ${ROOM_SVGS[item.room]}
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto pt-2">
+                        ${item.choices.map(choice => `
+                            <button onclick="checkAct1('${choice}', '${item.correct}')" class="btn-3d bg-white hover:bg-indigo-50 border-2 border-indigo-200 text-indigo-900 font-display text-lg py-3 px-4 rounded-2xl shadow-sm text-center">
+                                ${choice}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAct1(selected, correct) {
+            if (selected === correct) {
+                playSound('correct');
+                totalScore++;
+                showFeedback('Great job! 🎉', true);
+                setTimeout(() => {
+                    act1Index++;
+                    renderActivity1();
+                }, 1000);
+            } else {
+                playSound('wrong');
+                showFeedback('Almost! Try again.', false);
+            }
+        }
+
+        // ========================================================
+        // ACTIVITY 2: MATCH THE PICTURE (Drag/Tap Matching)
+        // ========================================================
+        let act2Matched = 0;
+        let selectedLabel = null;
+
+        function renderActivity2() {
+            updateProgress(2);
+            act2Matched = 0;
+            const container = document.getElementById('activity-container');
+            
+            const shuffledVocab = [...DATA.vocab].sort(() => Math.random() - 0.5);
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider">Activity 2: Match the Picture</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">5 Items</span>
+                    </div>
+
+                    <div class="text-center">
+                        <h2 class="text-2xl font-display font-bold text-slate-800">Match Each Word to Its Room</h2>
+                        <p class="text-sm text-slate-500">Click a word below, then click its corresponding room picture!</p>
+                    </div>
+
+                    <!-- Draggable / Clickable Words -->
+                    <div id="words-bank" class="flex flex-wrap justify-center gap-3 p-4 bg-indigo-50/60 rounded-2xl border border-indigo-100">
+                        ${shuffledVocab.map(v => `
+                            <button id="word-${v.id}" onclick="selectAct2Word('${v.id}', '${v.franco}')" class="word-btn btn-3d bg-white hover:bg-indigo-100 border-2 border-indigo-300 text-indigo-900 font-display text-base md:text-lg px-4 py-2 rounded-xl shadow-sm">
+                                ${v.franco}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <!-- Room Grid Target Dropzones -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                        ${DATA.vocab.map(v => `
+                            <div id="drop-${v.id}" onclick="matchAct2Room('${v.id}')" class="room-target drop-zone bg-white rounded-2xl p-2 border-2 border-dashed border-slate-300 text-center cursor-pointer transition hover:border-indigo-400 flex flex-col justify-between h-48">
+                                <div class="h-28 w-full overflow-hidden rounded-lg">
+                                    ${ROOM_SVGS[v.id]}
+                                </div>
+                                <div id="slot-${v.id}" class="mt-2 text-xs font-bold text-slate-400 bg-slate-50 py-2 rounded-lg border border-slate-200">
+                                    Tap to match
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectAct2Word(id, franco) {
+            selectedLabel = { id, franco };
+            document.querySelectorAll('.word-btn').forEach(b => b.classList.remove('ring-4', 'ring-indigo-400', 'bg-indigo-200'));
+            const btn = document.getElementById(`word-${id}`);
+            if (btn) btn.classList.add('ring-4', 'ring-indigo-400', 'bg-indigo-200');
+        }
+
+        function matchAct2Room(roomId) {
+            if (!selectedLabel) {
+                showFeedback('Select a word from the box first!', false);
+                return;
+            }
+
+            if (selectedLabel.id === roomId) {
+                playSound('correct');
+                totalScore++;
+                act2Matched++;
+                showFeedback('Correct! ⭐', true);
+
+                // Disable matched word and slot
+                const slot = document.getElementById(`slot-${roomId}`);
+                slot.textContent = selectedLabel.franco;
+                slot.className = "mt-2 text-xs font-bold text-white bg-green-500 py-2 rounded-lg shadow-sm";
+
+                const btn = document.getElementById(`word-${selectedLabel.id}`);
+                if (btn) btn.classList.add('invisible');
+
+                selectedLabel = null;
+
+                if (act2Matched === 5) {
+                    setTimeout(() => {
+                        currentActivity = 3;
+                        renderActivity3();
+                    }, 1200);
+                }
+            } else {
+                playSound('wrong');
+                showFeedback('Not quite! Try another room.', false);
+            }
+        }
+
+        // ==========================================================
+        // ACTIVITY 3: ENGLISH -> FRANCO (5 Questions)
+        // ==========================================================
+        let act3Index = 0;
+        const act3Data = [
+            { english: 'Bedroom', correct: 'oda el nom', options: ['salon', 'oda el nom', 'matb5'] },
+            { english: 'Bathroom', correct: '7ammam', options: ['7ammam', 'sofra', 'oda el nom'] },
+            { english: 'Kitchen', correct: 'matb5', options: ['salon', 'matb5', '7ammam'] },
+            { english: 'Living Room', correct: 'salon', options: ['oda el nom', 'sofra', 'salon'] },
+            { english: 'Dining Room', correct: 'sofra', options: ['sofra', '7ammam', 'matb5'] }
+        ];
+
+        function renderActivity3() {
+            updateProgress(3);
+            if (act3Index >= act3Data.length) {
+                act3Index = 0;
+                currentActivity = 4;
+                renderActivity4();
+                return;
+            }
+
+            const item = act3Data[act3Index];
+            const container = document.getElementById('activity-container');
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider">Activity 3: English → Franco</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">Question ${act3Index + 1} of 5</span>
+                    </div>
+
+                    <div class="text-center space-y-3">
+                        <p class="text-sm text-slate-500 uppercase tracking-widest font-bold">Translate to Egyptian Arabic</p>
+                        <div class="inline-block bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-display text-3xl md:text-4xl px-8 py-4 rounded-3xl shadow-lg">
+                            ${item.english}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-lg mx-auto pt-6">
+                        ${item.options.map(opt => `
+                            <button onclick="checkAct3('${opt}', '${item.correct}')" class="btn-3d bg-white hover:bg-purple-50 border-2 border-purple-200 text-purple-900 font-display text-xl py-4 rounded-2xl shadow-sm text-center">
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAct3(selected, correct) {
+            if (selected === correct) {
+                playSound('correct');
+                totalScore++;
+                showFeedback('Awesome! 🎉', true);
+                setTimeout(() => {
+                    act3Index++;
+                    renderActivity3();
+                }, 1000);
+            } else {
+                playSound('wrong');
+                showFeedback('Try again!', false);
+            }
+        }
+
+        // ==========================================================
+        // ACTIVITY 4: WHAT ROOM IS IT? (5 Questions)
+        // ==========================================================
+        let act4Index = 0;
+        const act4Data = [
+            { id: 'kitchen', correct: 'matb5', choices: ['matb5', '7ammam', 'oda el nom'] },
+            { id: 'bedroom', correct: 'oda el nom', choices: ['sofra', 'oda el nom', 'salon'] },
+            { id: 'bathroom', correct: '7ammam', choices: ['7ammam', 'matb5', 'sofra'] },
+            { id: 'salon', correct: 'salon', choices: ['salon', 'oda el nom', '7ammam'] },
+            { id: 'sofra', correct: 'sofra', choices: ['matb5', 'sofra', 'salon'] }
+        ];
+
+        function renderActivity4() {
+            updateProgress(4);
+            if (act4Index >= act4Data.length) {
+                act4Index = 0;
+                currentActivity = 5;
+                renderActivity5();
+                return;
+            }
+
+            const item = act4Data[act4Index];
+            const container = document.getElementById('activity-container');
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider">Activity 4: What Room Is It?</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">Question ${act4Index + 1} of 5</span>
+                    </div>
+
+                    <div class="text-center space-y-2">
+                        <h2 class="text-2xl font-display font-bold text-slate-800">What room is this?</h2>
+                    </div>
+
+                    <div class="max-w-md mx-auto h-56 md:h-64 p-2 bg-white rounded-3xl shadow-md border border-slate-100">
+                        ${ROOM_SVGS[item.id]}
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto pt-2">
+                        ${item.choices.map(choice => `
+                            <button onclick="checkAct4('${choice}', '${item.correct}')" class="btn-3d bg-white hover:bg-emerald-50 border-2 border-emerald-200 text-emerald-900 font-display text-lg py-3 px-4 rounded-2xl shadow-sm text-center">
+                                ${choice}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAct4(selected, correct) {
+            if (selected === correct) {
+                playSound('correct');
+                totalScore++;
+                showFeedback('Spot on! ⭐', true);
+                setTimeout(() => {
+                    act4Index++;
+                    renderActivity4();
+                }, 1000);
+            } else {
+                playSound('wrong');
+                showFeedback('Not quite. Give it another shot!', false);
+            }
+        }
+
+        // ==========================================================
+        // ACTIVITY 5: DRAG & DROP WORD ONTO PICTURE (5 Questions)
+        // ==========================================================
+        let act5Index = 0;
+        const act5Data = [
+            { id: 'bedroom', englishLabel: 'BEDROOM', correct: 'oda el nom', choices: ['7ammam', 'oda el nom', 'salon'] },
+            { id: 'bathroom', englishLabel: 'BATHROOM', correct: '7ammam', choices: ['7ammam', 'matb5', 'sofra'] },
+            { id: 'kitchen', englishLabel: 'KITCHEN', correct: 'matb5', choices: ['salon', 'oda el nom', 'matb5'] },
+            { id: 'salon', englishLabel: 'LIVING ROOM', correct: 'salon', choices: ['sofra', 'salon', '7ammam'] },
+            { id: 'sofra', englishLabel: 'DINING ROOM', correct: 'sofra', choices: ['sofra', 'matb5', 'oda el nom'] }
+        ];
+
+        function renderActivity5() {
+            updateProgress(5);
+            if (act5Index >= act5Data.length) {
+                act5Index = 0;
+                currentActivity = 6;
+                renderActivity6();
+                return;
+            }
+
+            const item = act5Data[act5Index];
+            const container = document.getElementById('activity-container');
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider">Activity 5: Tap the Franco Label</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">Item ${act5Index + 1} of 5</span>
+                    </div>
+
+                    <div class="text-center space-y-1">
+                        <div class="inline-block bg-slate-800 text-yellow-300 font-display text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">
+                            English Label: ${item.englishLabel}
+                        </div>
+                        <h2 class="text-xl font-display font-bold text-slate-700">Which Franco word belongs here?</h2>
+                    </div>
+
+                    <div class="max-w-md mx-auto h-52 md:h-60 p-2 bg-white rounded-3xl shadow-md border border-slate-100 relative">
+                        ${ROOM_SVGS[item.id]}
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto pt-2">
+                        ${item.choices.map(choice => `
+                            <button onclick="checkAct5('${choice}', '${item.correct}')" class="btn-3d bg-white hover:bg-amber-50 border-2 border-amber-300 text-amber-900 font-display text-lg py-3 px-4 rounded-2xl shadow-sm text-center">
+                                ${choice}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAct5(selected, correct) {
+            if (selected === correct) {
+                playSound('correct');
+                totalScore++;
+                showFeedback('Perfect match! 🌟', true);
+                setTimeout(() => {
+                    act5Index++;
+                    renderActivity5();
+                }, 1000);
+            } else {
+                playSound('wrong');
+                showFeedback('Try again!', false);
+            }
+        }
+
+        // ==========================================================
+        // ACTIVITY 6: FINAL MINI QUIZ (5 Questions)
+        // ==========================================================
+        const quizQuestions = [
+            { q: 'Where do you eat with your family?', img: 'sofra', correct: 'sofra', choices: ['oda el nom', 'sofra', '7ammam'] },
+            { q: 'What is "Kitchen" in Franco?', img: 'kitchen', correct: 'matb5', choices: ['matb5', 'salon', 'oda el nom'] },
+            { q: 'Where do you take a shower?', img: 'bathroom', correct: '7ammam', choices: ['7ammam', 'sofra', 'matb5'] },
+            { q: 'Where do you sleep?', img: 'bedroom', correct: 'oda el nom', choices: ['salon', 'oda el nom', '7ammam'] },
+            { q: 'What room is this?', img: 'salon', correct: 'salon', choices: ['matb5', 'salon', 'sofra'] }
+        ];
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        function renderActivity6() {
+            updateProgress(6);
+            if (quizIndex >= quizQuestions.length) {
+                renderResults();
+                return;
+            }
+
+            const item = quizQuestions[quizIndex];
+            const container = document.getElementById('activity-container');
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider">Final Mini Quiz</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">Quiz Question ${quizIndex + 1} of 5</span>
+                    </div>
+
+                    <div class="text-center space-y-2">
+                        <h2 class="text-2xl font-display font-bold text-slate-800">${item.q}</h2>
+                    </div>
+
+                    <div class="max-w-md mx-auto h-48 md:h-56 p-2 bg-white rounded-3xl shadow-md border border-slate-100">
+                        ${ROOM_SVGS[item.img]}
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto pt-2">
+                        ${item.choices.map(choice => `
+                            <button onclick="submitQuizAnswer('${choice}', '${item.correct}')" class="btn-3d bg-white hover:bg-blue-50 border-2 border-blue-200 text-blue-900 font-display text-lg py-3 px-4 rounded-2xl shadow-sm text-center">
+                                ${choice}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitQuizAnswer(selected, correct) {
+            if (selected === correct) {
+                quizScore++;
+                totalScore++;
+                playSound('correct');
+            } else {
+                playSound('wrong');
+            }
+
+            quizIndex++;
+            renderActivity6();
+        }
+
+        // ==========================================================
+        // FINAL RESULTS & FORMSPREE SUBMISSION
+        // ==========================================================
+        function renderResults() {
+            const container = document.getElementById('activity-container');
+            const totalActivityQuestions = 25; // 5 x 5 activities
+            const isHighScore = quizScore >= 4;
+
+            if (isHighScore) {
+                playSound('win');
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            container.innerHTML = `
+                <div class="text-center space-y-6 py-4">
+                    <div class="inline-block p-4 bg-yellow-100 rounded-full">
+                        <div class="text-6xl">${isHighScore ? '🏆' : '💪'}</div>
+                    </div>
+
+                    <h2 class="text-3xl font-display font-bold text-slate-800">
+                        ${isHighScore ? 'Great work, Joanna! 🎉' : 'Good try, Joanna! 💪'}
+                    </h2>
+
+                    <div class="bg-indigo-50 border border-indigo-100 p-6 rounded-3xl max-w-sm mx-auto space-y-2">
+                        <p class="text-slate-600 font-medium">Final Quiz Result:</p>
+                        <p class="text-4xl font-display font-bold text-indigo-600">${quizScore} / 5</p>
+                        <p class="text-xs text-slate-400">Total Practice Score: ${totalScore} points</p>
+                    </div>
+
+                    <p class="text-sm text-slate-600 max-w-md mx-auto">
+                        ${isHighScore 
+                            ? 'You have mastered the room names in Egyptian Arabic Franco!' 
+                            : "Let's practice these words again to make them extra strong!"}
+                    </p>
+
+                    <!-- Formspree Submission Form -->
+                    <form id="homework-form" action="https://formspree.io/f/mdenjpyn" method="POST" class="pt-4 max-w-sm mx-auto space-y-3">
+                        <input type="hidden" name="student_name" value="Joanna">
+                        <input type="hidden" name="quiz_score" value="${quizScore} / 5">
+                        <input type="hidden" name="total_practice_score" value="${totalScore}">
+                        <input type="hidden" name="completion_status" value="${isHighScore ? 'Passed with flying colors' : 'Completed practice'}">
+                        <input type="hidden" name="submitted_at" value="${new Date().toLocaleString()}">
+
+                        <button type="submit" id="submit-btn" class="w-full btn-3d bg-green-500 hover:bg-green-600 text-white font-display text-lg py-3 px-6 rounded-2xl shadow-3d-success transition">
+                            Submit Homework 📤
+                        </button>
+                    </form>
+
+                    <div id="submit-status" class="hidden text-sm font-bold text-indigo-600"></div>
+
+                    <div class="pt-2">
+                        <button onclick="restartHomework()" class="text-xs font-bold text-slate-400 hover:text-slate-600 underline">
+                            Try Homework Again 🔄
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Intercept Formspree submission for seamless UX
+            const form = document.getElementById('homework-form');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('submit-btn');
+                const status = document.getElementById('submit-status');
+                
+                btn.disabled = true;
+                btn.innerText = 'Submitting...';
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        btn.classList.add('hidden');
+                        status.classList.remove('hidden');
+                        status.innerHTML = '✅ Homework submitted successfully to your teacher!';
+                        playSound('correct');
+                    } else {
+                        btn.disabled = false;
+                        btn.innerText = 'Submit Homework 📤';
+                        alert('Oops! There was an issue submitting. Please try again.');
+                    }
+                } catch (error) {
+                    btn.disabled = false;
+                    btn.innerText = 'Submit Homework 📤';
+                    alert('Submission error. Please check your internet connection.');
+                }
+            });
+        }
+
+        function restartHomework() {
+            currentActivity = 1;
+            act1Index = 0;
+            act2Matched = 0;
+            act3Index = 0;
+            act4Index = 0;
+            act5Index = 0;
+            quizIndex = 0;
+            quizScore = 0;
+            totalScore = 0;
+            renderActivity1();
+        }
+    </script>
+</body>
+</html>
